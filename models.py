@@ -1,3 +1,5 @@
+import os
+
 from functools import lru_cache
 from urllib.parse import quote_plus
 
@@ -9,6 +11,12 @@ from werkzeug.security import generate_password_hash, check_password_hash
 import enum
 
 Base = declarative_base()
+
+# Configuration
+DB_HOST = os.getenv('DB_HOST', 'localhost')
+DB_USER = os.getenv('DB_USER', 'vajnar')
+DB_PASSWORD = os.getenv('DB_PASSWORD', 'AldebaraN7#')
+DB_NAME = os.getenv('DB_NAME', 'vajnar_globe')
 
 
 @lru_cache(maxsize=32)
@@ -31,9 +39,9 @@ def get_session_factory(host, user, password, database):
     return sessionmaker(bind=engine, autoflush=False, autocommit=False)
 
 
-def get_session(host, user, password, database):
+def get_session():
     """Create a request-scoped database session from the shared factory."""
-    return get_session_factory(host, user, password, database)()
+    return get_session_factory(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME)()
 
 
 class SectorEnum(enum.Enum):
@@ -73,6 +81,7 @@ class User(Base):
 
     id = Column(Integer, primary_key=True)
     email = Column(String(255), unique=True, nullable=False)
+    logged_in = Column(Boolean, nullable=False, default=False)
     areas = relationship('Area', secondary=user_area, backref='users')
 
 
