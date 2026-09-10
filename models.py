@@ -3,7 +3,7 @@ import os
 from functools import lru_cache
 from urllib.parse import quote_plus
 
-from sqlalchemy import Boolean, create_engine, Column, Integer, String, Text, DateTime, Enum, func, LargeBinary, ForeignKey, Table
+from sqlalchemy import Boolean, Float, create_engine, Column, Integer, String, Text, DateTime, Enum, func, LargeBinary, ForeignKey, Table
 from sqlalchemy.orm import sessionmaker, declarative_base, relationship
 from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.dialects.mysql import LONGBLOB
@@ -93,4 +93,4 @@ class GeoPoint(Base):
     latitude = Column(String(50), nullable=False)
     longitude = Column(String(50), nullable=False)
     area = relationship('Area', backref='geopoints')
-    timestamp = Column(DateTime, server_default=func.now(), nullable=False)
+    stamp = Column(Integer, nullable=False)

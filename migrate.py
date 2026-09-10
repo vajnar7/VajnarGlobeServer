@@ -55,11 +55,12 @@ def build_db():
 
         res = root.Document.Placemark.Polygon.outerBoundaryIs.LinearRing.coordinates.text.strip().split(' ')
         stamp = 0
+        print(res)
         for p in res:
             c = p.split(',')
-            lon, lat = float(c[0]), float(c[1])
+            lon, lat = c[0], c[1]
             a.geopoints.append(
-                GeoPoint(latitude=str(lat), longitude=str(lon))
+                GeoPoint(latitude=lat, longitude=lon, stamp=stamp)
             )
             stamp += 1
 
